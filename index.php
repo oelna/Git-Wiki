@@ -116,7 +116,7 @@
 
 	<h1><?= $wikiword ?></h1>
 	<h2>Showing <span title="<?= $commit ?>"><?= substr($commit, 0, $config['short_hash_length']) ?></span></h2>
-	<p class="message">x<?php
+	<p class="message"><?php
 		$message = shell_exec(GITBINARY.' show -s --format=%s '.$commit);
 		echo($message);
 	?></p>
