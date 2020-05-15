@@ -58,7 +58,6 @@
 		if(!isset($count) || !is_numeric($count)) $count = 0;
 
 		$command = GITBINARY.' log';
-		//$command .= ' --pretty=format:\'{  "commit": "%H",  "abbreviated_commit": "%h",  "tree": "%T",  "abbreviated_tree": "%t",  "parent": "%P",  "abbreviated_parent": "%p",  "date": "%aD",  "subject": "%s",  "author": { "name": "%aN", "email": "%aE"}}\'';
 
 		// https://gist.github.com/varemenos/e95c2e098e657c7688fd
 		$command .= ' --pretty=format:\'{  *$*commit*$*: *$*%H*$*,  *$*abbreviated_commit*$*: *$*%h*$*,  *$*tree*$*: *$*%T*$*,  *$*abbreviated_tree*$*: *$*%t*$*,  *$*parent*$*: *$*%P*$*,  *$*abbreviated_parent*$*: *$*%p*$*,  *$*date*$*: *$*%aD*$*,  *$*subject*$*: *$*%s*$*,  *$*author*$*: { *$*name*$*: *$*%aN*$*, *$*email*$*: *$*%aE*$*}}\'';
@@ -80,92 +79,9 @@
 		return $return;
 	}
 
-	/*
-	function parse_log_array2(array $array):array {
-		$return_array = [];
-
-		$log_item = [];
-
-		foreach ($array as $key => $value) {
-			
-			// if(empty($value)) continue;
-
-			$check = substr($value, 0, 6);
-
-			if($check === 'commit') {
-
-				// save the previous entry
-				if(sizeof($log_item) > 0) {
-					$return_array[] = $log_item;
-					$log_item = [];
-				}
-
-				$value = str_replace('commit ', '', $value);
-				$log_item['commit'] = trim($value);
-				continue;
-			}
-
-			if($check === 'Author') {
-				$pos = strpos($value, 'Author: ');
-				if ($pos !== false) {
-					$value = substr_replace($value, '', $pos, 8);
-				}
-
-				$author = rtrim($value, '>');
-				$author = explode(' <', $author);
-				$log_item['author'] = [
-					'name' => $author[0],
-					'email' => $author[1]
-				];
-
-				continue;
-			}
-
-			if($check === 'Date: ') {
-				$pos = strpos($value, 'Date: ');
-				if ($pos !== false) {
-					$value = substr_replace($value, '', $pos, 6);
-				}
-				$log_item['date'] = strtotime($value);
-				continue;
-			}
-
-			$log_item['message'] = trim($value);
-			var_dump($log_item);
-		}
-
-		// save the last item
-		$return_array[] = $log_item;
-
-		return $return_array;
-	}
-	*/
-
 	if(file_exists(GITDIR) && is_dir(GITDIR)) {
 
-		/*
-		echo('Site root: '.ROOT).BR;
-		echo('Wiki pages dir: '.GITDIR).BR;
-		echo 'Working dir: '.shell_exec('pwd').BR; // returns string
-		echo 'Current user: '.shell_exec('whoami').BR;
-
-		echo 'git version: '.shell_exec('git --version').BR;
-
-		echo 'current user name: '.$config['user']['name'].BR;
-		echo 'current user email: '.$config['user']['email'].BR;
-		*/
-
-		/*
-		exec('git status 2>&1', $status);
-		echo('<pre>');var_dump($status);echo('</pre>');
-		*/
-
 		exec(GITBINARY.' rev-parse --verify HEAD 2> /dev/null', $hash);
-
-		// echo('<pre><h3>Current HEAD</h3>');var_dump($hash);echo('</pre>');
-
-		// git log -1 --format=%h --abbrev=8 // 8 char hash
-		// git log -1 --format=%H // full hash
 
 		if(isset($_POST['page_content'])) {
 			$commit_message = str_replace('"', '\"', $_POST['commit_message']);
@@ -183,32 +99,9 @@
 			echo nl2br(shell_exec(GITBINARY.' diff --shortstat '.$hash[0].' HEAD '.$filename).BR);
 		}
 		
-		// echo('<pre>');var_dump($new_commit);echo('</pre>');
-
-		// stats
-		// echo nl2br(shell_exec('git diff --stat '.$hash[0].' HEAD '.$filename).BR);
-		// echo nl2br(shell_exec('git diff --shortstat '.$hash[0].' HEAD '.$filename).BR);
-		// echo nl2br(shell_exec('git diff --numstat '.$hash[0].' HEAD '.$filename).BR);
-
-
-		// exec('git log 2> /dev/null', $log);
-		// $parsed_log = git_log($filename, 4);
-		// echo('Log Size: '.sizeof($parsed_log).'<pre><h3>Log</h3>');var_dump($parsed_log);echo('</pre>');
-
-		// echo('<pre>');echo(file_get_contents(GITDIR.DS.$filename));echo('</pre>');
 	} else {
 		echo('Not a valid git repo!');
 	}
-
-	// git log --numstat --pretty="%H" --author="Your Name" commit1..commit2 | awk 'NF==3 {plus+=$1; minus+=$2} END {printf("+%d, -%d\n", plus, minus)}'
-	// git log --numstat --pretty="%H" d0f3c67dda1d42d945842cfc500f08ba2b7c62d5..24acdf118017442c6f496254690e644507d8b429 | awk 'NF==3 {plus+=$1; minus+=$2} END {printf("+%d, -%d\n", plus, minus)}'
-
-	// d0f3c67dda1d42d945842cfc500f08ba2b7c62d5 24acdf118017442c6f496254690e644507d8b429
-	// git diff HEAD~1 HEAD page.md
-	// git log --oneline --shortstat page.md
-	// git log --stat
-	// git log d0f3c67dda1d42d945842cfc500f08ba2b7c62d5^..24acdf118017442c6f496254690e644507d8b429 --oneline --shortstat --author="Mike Surname"
-	// git log --name-only --oneline
 
 ?><!DOCTYPE html>
 <html lang="en">
@@ -272,10 +165,7 @@
 			<?php
 				$content = '';
 				if(file_exists(GITDIR.DS.$filename)) { // todo: different error handling!
-					// $commit_hash = 'e0f719095445c2d99a37ac1ac7a18b8bfbc3983f';
 					$content = shell_exec(GITBINARY.' show '.$commit.':'.$filename);
-					
-					// $content = file_get_contents(GITDIR.DS.$filename);
 				}
 			?>
 			<input type="hidden" name="previous_commit" value="<?= $hash[0] ?>" />
