@@ -60,16 +60,13 @@
 		$command = GITBINARY.' log';
 
 		// https://gist.github.com/varemenos/e95c2e098e657c7688fd
-		$command .= ' --pretty=format:\'{  *$*commit*$*: *$*%H*$*,  *$*abbreviated_commit*$*: *$*%h*$*,  *$*tree*$*: *$*%T*$*,  *$*abbreviated_tree*$*: *$*%t*$*,  *$*parent*$*: *$*%P*$*,  *$*abbreviated_parent*$*: *$*%p*$*,  *$*date*$*: *$*%aD*$*,  *$*subject*$*: *$*%s*$*,  *$*author*$*: { *$*name*$*: *$*%aN*$*, *$*email*$*: *$*%aE*$*}}\'';
+		$command .= ' --pretty=format:\'{^^^^commit^^^^: ^^^^%H^^^^,^^^^abbreviated_commit^^^^: ^^^^%h^^^^,^^^^tree^^^^: ^^^^%T^^^^,^^^^abbreviated_tree^^^^: ^^^^%t^^^^,^^^^parent^^^^: ^^^^%P^^^^,^^^^abbreviated_parent^^^^: ^^^^%p^^^^,^^^^date^^^^: ^^^^%aD^^^^,^^^^subject^^^^: ^^^^%s^^^^,^^^^author^^^^: { ^^^^name^^^^: ^^^^%aN^^^^, ^^^^email^^^^: ^^^^%aE^^^^}}\'';
 
 		if($count > 0) $command .= ' -'.$count;
 		$command .= ' -- '.$page;
+		$command .= " | sed 's/\"/\\\\\"/g' | sed 's/\^^^^/\"/g'";
 
 		exec($command.' 2> /dev/null', $log);
-
-		// var_dump($log);
-		$log = str_replace('"', '\"', $log);
-		$log = str_replace('*$*', '"', $log);
 
 		$return = array();
 		foreach($log as $key => $value) {
@@ -111,45 +108,7 @@
 
 	<link href="data:image/x-icon;base64,iVBORw0KGgoAAAANSUhEUgAAABAAAAAQEAYAAABPYyMiAAAABmJLR0T///////8JWPfcAAAACXBIWXMAAABIAAAASABGyWs+AAAAF0lEQVRIx2NgGAWjYBSMglEwCkbBSAcACBAAAeaR9cIAAAAASUVORK5CYII=" rel="icon" type="image/x-icon" />
 
-	<style>
-		* { box-sizing: border-box; }
-
-		html {
-			font: 100%/1.4 system-ui, Helvetica, Arial, sans-serif;
-		}
-
-		#container {
-			display: flex;
-		}
-
-		#container > * {
-			flex: 1;
-			margin-right: 2em;
-			width: CALC((100% / 3) - 2em);
-		}
-
-		form textarea,
-		form input[name="commit_message"] {
-			width: 100%;
-			font-size: 1rem;
-			padding: 0.4em;
-		}
-
-		#log table th,
-		#log table td {
-			vertical-align: top;
-			text-align: left;
-		}
-
-		#log table tr + tr td {
-			border-top: 1px solid #000;
-		}
-
-		#log .author { width: 40ch; }
-		#log .date { width: 20ch; }
-		#log .commit { width: 9ch; }
-		#log .message { width: auto; }
-	</style>
+	<link rel="stylesheet" href="./main.css" />
 </head>
 <body>
 

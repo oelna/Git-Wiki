@@ -1,0 +1,41 @@
+* { box-sizing: border-box; margin: 0; padding: 0; font-size: 100%; }
+
+html {
+	font: 100%/1.4 system-ui, Helvetica, Arial, sans-serif;
+}
+
+body {
+	padding: 1rem;
+}
+
+#container {
+	display: flex;
+}
+
+#container > * {
+	flex: 1;
+	margin-right: 2em;
+	width: CALC((100% / 3) - 2em);
+}
+
+form textarea,
+form input[name="commit_message"] {
+	width: 100%;
+	font-size: 1rem;
+	padding: 0.4em;
+}
+
+#log table th,
+#log table td {
+	vertical-align: top;
+	text-align: left;
+}
+
+#log table tr + tr td {
+	border-top: 1px solid #000;
+}
+
+#log .author { width: 40ch; }
+#log .date { width: 20ch; }
+#log .commit { width: 9ch; }
+#log .message { width: auto; }
