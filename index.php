@@ -32,13 +32,13 @@
 	if(!file_exists(GITDIR) || !is_dir(GITDIR)) {
 		// chmod(ROOT, 0755);
 		mkdir(GITDIR);
-		shell_exec('cd '.GITDIR.' && git init 2>&1');
+		shell_exec('cd '.GITDIR.' && '.GITBINARY.' init 2>&1');
 	}
 	chdir(GITDIR);
 
 	// check repo health
-	if(strpos(shell_exec('git status 2>&1'), 'not a git repository') !== false) {
-		shell_exec('git init 2>&1');
+	if(strpos(shell_exec(GITBINARY.' status 2>&1'), 'not a git repository') !== false) {
+		shell_exec(GITBINARY.' init 2>&1');
 	}
 
 	// simple url parsing, via https://stackoverflow.com/a/15365504/3625228
@@ -106,6 +106,8 @@
 	<meta charset="utf-8" />
 	<title>Git Wiki v0.2</title>
 
+	<base href="<?= HOME ?>/">
+
 	<link href="data:image/x-icon;base64,iVBORw0KGgoAAAANSUhEUgAAABAAAAAQEAYAAABPYyMiAAAABmJLR0T///////8JWPfcAAAACXBIWXMAAABIAAAASABGyWs+AAAAF0lEQVRIx2NgGAWjYBSMglEwCkbBSAcACBAAAeaR9cIAAAAASUVORK5CYII=" rel="icon" type="image/x-icon" />
 
 	<link rel="stylesheet" href="./main.css" />
@@ -156,7 +158,7 @@
 				<tr>
 					<td><?= $c['author']['name'] ?></td>
 					<td><time datetime="<?= date('Y-m-d H:i:s', $timestamp) ?>"><?= date('d.m. H:i', $timestamp) ?></time></td>
-					<td><a href="<?= HOME ?>/<?= $wikiword ?>/<?= $c['abbreviated_commit'] ?>/"><?= $c['abbreviated_commit'] ?></a></td>
+					<td><a href="./<?= $wikiword ?>/<?= $c['abbreviated_commit'] ?>/"><?= $c['abbreviated_commit'] ?></a></td>
 					<td><?= trim($c['subject']) ?></td>
 				</tr>
 				<?php endforeach; ?>
