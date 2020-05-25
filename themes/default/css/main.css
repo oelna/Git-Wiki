@@ -1,0 +1,126 @@
+* { box-sizing: border-box; margin: 0; padding: 0; font-size: 100%; }
+
+html {
+	font: 100%/1.4 system-ui, Helvetica, Arial, sans-serif;
+	background-color: #ccc;
+}
+
+body {
+	padding: 0;
+}
+
+a {
+	color: #007aff;
+}
+
+#container {
+	width: 80%;
+	margin: 0 auto;
+	background: #fff;
+	padding: 1em;
+	min-height: 100vh;
+}
+
+header {
+	padding-bottom: 1em;
+	border-bottom: 1px solid #ccc;
+	margin-bottom: 1em;
+}
+
+main {
+	display: flex;
+	flex-flow: row nowrap;
+}
+
+main nav {
+	width: 20%;
+	padding-right: 1em;
+}
+
+main nav li {
+	list-style: none;
+}
+
+main nav li + li {
+	border-top: 1px solid #ccc;
+}
+
+main nav li a {
+	display: block;
+	text-decoration: none;
+	padding: 0.25em 0;
+}
+
+main nav li:hover a {
+	background-color: #f8f8f8;
+}
+
+main .content {
+	width: 80%;
+}
+
+main .content .head {
+	margin-bottom: 1em;
+}
+
+.tab-container .tab-nav {
+	display: flex;
+	list-style: none;
+	margin-bottom: 1em;
+}
+
+.tab-container .tab-nav li {
+	background-color: #000;
+	color: #fff;
+	padding: 0.2em 0.5em;
+	cursor: pointer;
+}
+
+.tab-container .tab-nav li + li {
+	margin-left: 0.5em;
+}
+
+.tab-container .tab-nav li.active {
+	background-color: #007aff;
+}
+
+.tab-container .tabs {
+	width: 100%;
+}
+
+.tab-container .tabs > *:not(.active) {
+	display: none;
+}
+
+form textarea,
+form input[name="commit_message"] {
+	width: 100%;
+	font-size: 1rem;
+	padding: 0.4em;
+}
+
+#log table {
+	width: 100%;
+	border-collapse: collapse;
+}
+
+#log table th,
+#log table td {
+	vertical-align: top;
+	text-align: left;
+	padding: 0.4em 0;
+}
+
+#log table tr + tr td {
+	border-top: 1px solid #000;
+}
+
+#log .author { width: 40ch; }
+#log .date { width: 20ch; }
+#log .commit { width: 9ch; }
+#log .message { width: auto; }
+
+#diff-input { display: none; }
+
+#diff-stats { display: flex; }
+#diff-stats > * { width: 50%; margin-bottom: 1em; }
