@@ -68,12 +68,14 @@
 */
 
 .d2h-file-wrapper {
-	border: 1px solid #f0f;
+	border: 1px solid #eee;
+	border-left: 0;
 }
 
 .d2h-diff-table {
 	width: 100%;
 	border-collapse: collapse;
+	border-spacing: 0;
 	font-family: ui-monospace, 'Menlo', 'Consolas', monospace;
 }
 
@@ -113,7 +115,7 @@
 .d2h-code-line ins,
 .d2h-code-side-line ins {
 	display: inline-block;
-	margin-top: 0.1em;
+	/* margin-top: 0.1em; */
 	text-decoration: none;
 }
 

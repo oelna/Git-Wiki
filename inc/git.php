@@ -37,7 +37,7 @@ class git {
 	public function file_exists($filename, $commit='HEAD') {
 		$command = $this->gitbinary.' cat-file -e '.$commit.':'.$filename;
 		$check = shell_exec($command);
-		// var_dump($command);
+		// https://stackoverflow.com/a/18462219/3625228
 		return (empty($check)) ? true : false;
 	}
 

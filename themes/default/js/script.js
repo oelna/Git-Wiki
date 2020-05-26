@@ -4,7 +4,15 @@ var oelna = window.oelna || {};
 oelna.gw = window.oelna.gw || {};
 
 oelna.gw.elements = {
-	'content': document.querySelector('main > .content')
+	'html': document.documentElement,
+	'content': document.querySelector('main > .content'),
+	// 'commitDiffRadioButtons': document.querySelectorAll('.select-commit'),
+	// 'showDiffButton': document.querySelector('#show-diff')
+}
+
+oelna.gw.status = {
+	'currentPage': '',
+	'selectedDiffRadioButtons': []
 }
 
 const output = document.querySelector('#preview');
@@ -36,7 +44,47 @@ document.addEventListener('DOMContentLoaded', function (event) {
 			document.querySelector('#diff-output').innerHTML = diffHtml;
 		}
 	}
+
 	
+	const commitDiffRadioButtons = document.querySelectorAll('.select-commit');
+	if (commitDiffRadioButtons !== null) {
+		commitDiffRadioButtons.forEach(function (ele, i) {
+			ele.addEventListener('change', function (event) {
+				event.preventDefault();
+
+				// enable the diff button
+				if (oelna.gw.status.selectedDiffRadioButtons.length > 0) {
+					document.querySelector('#show-diff').disabled = false;
+				}
+
+				if (oelna.gw.status.selectedDiffRadioButtons.length >= 2) {
+					const removedEle = oelna.gw.status.selectedDiffRadioButtons.shift();
+					removedEle.checked = false;
+				}
+				oelna.gw.status.selectedDiffRadioButtons.push(event.target);
+			});
+		});
+	}
+
+	const showDiffButton = document.querySelector('#show-diff');
+	if (showDiffButton !== null) {
+		showDiffButton.addEventListener('click', function (event) {
+			if (oelna.gw.status.selectedDiffRadioButtons.length < 2) return false;
+
+			const homePath = document.querySelector('head').dataset.home;
+			const currentPage = (document.documentElement.dataset.page.length > 0) ? document.documentElement.dataset.page : '';
+			const url = homePath+'/'+currentPage+'/diff/'+oelna.gw.status.selectedDiffRadioButtons[1].value+'/'+oelna.gw.status.selectedDiffRadioButtons[0].value+'/';
+
+			// deselect the radio buttons first, in case the user navigates back
+			if (commitDiffRadioButtons !== null) {
+				commitDiffRadioButtons.forEach(function (ele, i) {
+					ele.checked = false;
+				});
+			}
+
+			window.location.href = url;
+		});
+	}
 
 	document.querySelectorAll('.tab-container').forEach(function (e, i) {
 		const tabs = e.querySelectorAll('.tabs > *');
