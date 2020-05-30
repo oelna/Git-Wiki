@@ -2,7 +2,7 @@
 
 html {
 	font: 100%/1.4 system-ui, Helvetica, Arial, sans-serif;
-	background-color: #ccc;
+	background: #ccc url(../img/back.jpg);
 }
 
 body {
@@ -43,6 +43,7 @@ button[disabled],
 	background: #fff;
 	padding: 1em;
 	min-height: 100vh;
+	box-shadow: 0 0 2em rgba(0,0,0,0.1);
 }
 
 header {
@@ -141,10 +142,11 @@ form input[name="commit_message"] {
 }
 
 #log .select { width: 1.5em; }
-#log .author { width: 40ch; }
-#log .date { width: 20ch; }
+#log .author { width: 20ch; }
+#log .date { width: 12ch; }
 #log .commit { width: 9ch; }
 #log .message { width: auto; }
+#log .hash { font-family: ui-monospace, 'Menlo', 'Consolas', monospace; text-decoration: none; }
 
 #diff-input { display: none; }
 

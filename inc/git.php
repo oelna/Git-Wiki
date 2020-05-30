@@ -30,8 +30,47 @@ class git {
 		shell_exec($this->gitbinary.' init '.$dir.' 2>&1');
 	}
 
+	public function set_user($name, $email) {
+		shell_exec($this->gitbinary.' config user.name "'.addslashes($name).'" 2>&1');
+		shell_exec($this->gitbinary.' config user.email "'.addslashes($email).'" 2>&1');
+		return true;
+	}
+
 	public function get_file_content($filename, $commit='HEAD') {
 		return shell_exec($this->gitbinary.' show '.$commit.':'.$filename);
+	}
+
+	public function commit($files, $message='', $user=null, $tmp_dir=null) {
+		$temp_index = tempnam(($tmp_dir) ? $tmp_dir : sys_get_temp_dir(), 'gitwiki_index_');
+		$repo_dir = trim(shell_exec($this->gitbinary.' rev-parse --show-toplevel'));
+
+		// make a custom index for this commit
+		$indexprefix = '';
+		$indexprefix = 'GIT_INDEX_FILE='.$temp_index;
+		shell_exec('\cp '.$repo_dir.'/.git/index '.$temp_index);
+
+		// add the files
+		foreach ($files as $file) {
+			shell_exec($indexprefix.' '.$this->gitbinary.' add '.$file);
+		}
+
+		// build the commit command
+		$command = $indexprefix.' '.$this->gitbinary.' commit';
+		$command .= ' --allow-empty-message';
+		if(!empty($user) && isset($user['name']) && isset($user['email'])) $command .= ' --author="'.$user['name'].' <'.$user['email'].'>"';
+		$command .= ' -m "'.addslashes($message).'"';
+		$result = shell_exec($command);
+
+		// clean up the main index
+		$hash = trim(shell_exec($indexprefix.' '.$this->gitbinary.' rev-parse --verify HEAD'));
+		foreach ($files as $file) {
+			shell_exec($this->gitbinary.' checkout '.$hash.' -- '.$file);
+		}
+		
+		// remove the temp index file
+		shell_exec('rm '.$temp_index);
+
+		return $result;
 	}
 
 	public function file_exists($filename, $commit='HEAD') {

@@ -4,7 +4,7 @@
 	<meta charset="utf-8" />
 	<title>Git Wiki v0.2</title>
 
-	<base href="<?= HOME ?>/">
+	<base href="<?= HOME ?>">
 
 
 

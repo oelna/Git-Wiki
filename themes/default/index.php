@@ -75,7 +75,7 @@
 								<td><input type="radio" id="commit-<?= $head['abbreviated_commit'] ?>" class="select-commit" value="<?= $head['abbreviated_commit'] ?>" /></td>
 								<td><?= $head['author']['name'] ?></td>
 								<td><time datetime="<?= date('Y-m-d H:i:s', $timestamp) ?>"><?= date('d.m. H:i', $timestamp) ?></time></td>
-								<td><a title="<?= $head['abbreviated_commit'] ?>" href="./<?= $wikiword ?>/head/">HEAD</a></td>
+								<td><a class="hash" title="<?= $head['abbreviated_commit'] ?>" href="<?= HOME ?>/<?= $wikiword ?>/head/">HEAD</a></td>
 								<td><?= trim($head['subject']) ?></td>
 							</tr>
 							<?php
@@ -89,7 +89,7 @@
 								<td><input type="radio" id="commit-<?= $c['abbreviated_commit'] ?>" class="select-commit" value="<?= $c['abbreviated_commit'] ?>" /></td>
 								<td><?= $c['author']['name'] ?></td>
 								<td><time datetime="<?= date('Y-m-d H:i:s', $timestamp) ?>"><?= date('d.m. H:i', $timestamp) ?></time></td>
-								<td><a href="./<?= $wikiword ?>/<?= $c['abbreviated_commit'] ?>/"><?= $c['abbreviated_commit'] ?></a></td>
+								<td><a class="hash" href="<?= HOME ?>/<?= $wikiword ?>/<?= $c['abbreviated_commit'] ?>/"><?= $c['abbreviated_commit'] ?></a></td>
 								<td><?= trim($c['subject']) ?></td>
 							</tr>
 							<?php endforeach; ?>
